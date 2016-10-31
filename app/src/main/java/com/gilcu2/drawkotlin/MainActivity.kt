@@ -3,6 +3,7 @@ package com.gilcu2.drawkotlin
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity() {
@@ -68,5 +69,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun paintClicked(view: View) {
+
     }
 }

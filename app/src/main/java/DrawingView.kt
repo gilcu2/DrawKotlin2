@@ -24,6 +24,8 @@ class DrawingView(context: Context) : View(context) {
     val drawPaint = Paint()
     var paintColor = 0xFF6600
     val canvasPaint = Paint(Paint.DITHER_FLAG)
+    var canvasBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+    var drawCanvas = Canvas(canvasBitmap)
 
 
     fun setupDrawing() = {
@@ -39,7 +41,29 @@ class DrawingView(context: Context) : View(context) {
         super.onSizeChanged(w, h, oldw, oldh)
 
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        drawCanvas = new Canvas (canvasBitmap)
+        drawCanvas = Canvas(canvasBitmap)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        canvas.drawBitmap(canvasBitmap, 0.0f, 0.0f, canvasPaint)
+        canvas.drawPath(drawPath, drawPaint)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val touchX = event.getX()
+        val touchY = event.getY()
+        when (event.getAction()) {
+            MotionEvent.ACTION_DOWN -> drawPath.moveTo(touchX, touchY)
+            MotionEvent.ACTION_MOVE -> drawPath.lineTo(touchX, touchY)
+            MotionEvent.ACTION_UP -> {
+                drawCanvas.drawPath(drawPath, drawPaint)
+                drawPath.reset()
+            }
+            else -> return false
+
+        }
+        invalidate()
+        return true
     }
 }
 
