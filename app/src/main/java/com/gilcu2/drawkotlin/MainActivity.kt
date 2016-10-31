@@ -18,21 +18,21 @@ class MainActivity : AppCompatActivity() {
                 MainButtonData(R.drawable.eraser, "@string/eraser"),
                 MainButtonData(R.drawable.save, "@string/save"))
 
-        val colorsData = listOf(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                android.R.color.holo_green_light)
+        val colorsData = listOf(0xFF0000, 0x00FF00, 0x0000FF, 0xFFAA00, 0, 0xFFFFFF)
 
         verticalLayout {
 
             // Activity selection
             linearLayout {
 
-                for (r in activityButtonsData)
+                activityButtonsData.forEach {
                     imageButton {
-                        contentDescription = r.description
-                        imageResource = r.image
+                        contentDescription = it.description
+                        imageResource = it.image
                     }.lparams {
                         height = matchParent
                     }
+                }
 
             }.lparams {
                 height = dip(50)
@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
                 backgroundColor = R.color.colorBackground.opaque
             }.lparams {
                 margin = dip(5)
+            }.lparams {
+                weight = 1F
             }
 
             // Color selection
@@ -51,11 +53,18 @@ class MainActivity : AppCompatActivity() {
                 colorsData.forEach {
                     imageButton {
                         backgroundColor = it.opaque
+                        contentDescription = "@string/paint"
+//                        imageResource=R.drawable.paint
                     }.lparams {
-                        height = matchParent
+                        height = dip(50)
+                        width = dip(50)
+                        margin = dip(2)
                     }
                 }
 
+            }.lparams {
+                height = dip(54)
+                gravity = Gravity.CENTER
             }
 
         }
