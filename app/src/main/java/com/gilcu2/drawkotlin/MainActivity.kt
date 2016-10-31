@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             drawingView {
-                backgroundColor = R.color.colorBackground.opaque
+                backgroundColor = 0xFFFFFF.opaque
             }.lparams {
                 margin = dip(5)
             }.lparams {
