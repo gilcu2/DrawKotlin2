@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageButton
 import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 gravity = Gravity.CENTER
             }
 
-            drawingView {
+            val drawView = drawingView {
                 backgroundColor = 0xFFFFFF.opaque
             }.lparams {
                 margin = dip(5)
@@ -49,13 +50,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Color selection
-            linearLayout {
+            val paintLayout = linearLayout {
 
                 colorsData.forEach {
                     imageButton {
                         backgroundColor = it.opaque
+                        tag = it.opaque
                         contentDescription = "@string/paint"
 //                        imageResource=R.drawable.paint
+                        onClick {
+                            drawView.setColor(this.tag.toString().toInt())
+                        }
                     }.lparams {
                         height = dip(50)
                         width = dip(50)
@@ -68,10 +73,10 @@ class MainActivity : AppCompatActivity() {
                 gravity = Gravity.CENTER
             }
 
+            var currPaint = paintLayout.getChildAt(0)
+            drawView.setColor(currPaint.tag.toString().toInt())
+
         }
     }
 
-    fun paintClicked(view: View) {
-
-    }
 }

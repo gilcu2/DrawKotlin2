@@ -65,6 +65,11 @@ class DrawingView(context: Context) : View(context) {
         invalidate()
         return true
     }
+
+    fun setColor(color: Int) {
+        invalidate()
+        drawPaint.setColor(color)
+    }
 }
 
 public inline fun ViewManager.drawingView(theme: Int = 0) = drawingView(theme) {}
