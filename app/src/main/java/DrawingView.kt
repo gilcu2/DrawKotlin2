@@ -20,16 +20,16 @@ class DrawingView(context: Context) : View(context) {
         setupDrawing()
     }
 
+
     val drawPath = Path()
     val drawPaint = Paint()
-    var paintColor = 0xFF6600
+
+
     val canvasPaint = Paint(Paint.DITHER_FLAG)
     var canvasBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
     var drawCanvas = Canvas(canvasBitmap)
 
-
     fun setupDrawing() = {
-        drawPaint.setColor(paintColor)
         drawPaint.setAntiAlias(true)
         drawPaint.setStrokeWidth(20.0f)
         drawPaint.setStyle(Paint.Style.STROKE)
@@ -69,6 +69,11 @@ class DrawingView(context: Context) : View(context) {
     fun setColor(color: Int) {
         invalidate()
         drawPaint.setColor(color)
+    }
+
+    fun setBrushSize(brushSize: Float) {
+//        invalidate()
+        drawPaint.setStrokeWidth(brushSize)
     }
 }
 
