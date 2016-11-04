@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-class MainActivityUi : AnkoComponent<MainActivity> {
+class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
     private val customStyle = { v: Any ->
         when (v) {
 //            is Button -> v.textSize = 26f
@@ -28,7 +28,8 @@ class MainActivityUi : AnkoComponent<MainActivity> {
     }
 
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-        data class MainButtonData(val image: Int, val description: String)
+
+        data class MainButtonData(val image: Int, val description: String, val onClick: (View?) -> Unit = {})
 
         val activityButtonsData = listOf(
                 MainButtonData(R.drawable.new_pic, "@string/start_new"),
@@ -45,12 +46,13 @@ class MainActivityUi : AnkoComponent<MainActivity> {
         verticalLayout {
 
             // Activity selection
-            linearLayout {
+            val activityLayout = linearLayout {
 
                 activityButtonsData.forEach {
                     imageButton {
                         contentDescription = it.description
                         imageResource = it.image
+
                     }.lparams {
                         height = matchParent
                     }
@@ -97,6 +99,41 @@ class MainActivityUi : AnkoComponent<MainActivity> {
             drawView.setColor(currPaint.tag.toString().toInt())
             drawView.setBrushSize(brushSize)
 
+            val brushButton = activityLayout.getChildAt(1)
+            brushButton.onClick {
+                alert {
+                    title(R.string.brushSizeDialogTitle)
+                    customView {
+                        verticalLayout {
+                            brushSizes.forEach {
+                                button(it.toString()) {
+                                    tag = it
+                                    onClick {
+                                        val size = this.tag.toString().toFloat()
+                                        drawView.setBrushSize(size)
+                                        info("new size: " + size)
+
+                                    }
+                                }
+                            }
+                        }
+                        okButton { }
+
+                    }
+                }.show()
+
+            }
+
         }.applyRecursively(customStyle)
+
     }
+
+//    fun brushBottonClick(v:View?) {
+//        alert("@string/brushSizeDialogTitle") {
+//
+//        }
+//
+//    }
 }
+
+
