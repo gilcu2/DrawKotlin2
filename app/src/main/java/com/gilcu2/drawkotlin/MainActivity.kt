@@ -49,7 +49,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
-    fun setBrushButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
+    fun setBrushButtonClick(v: View, ui: AnkoContext<MainActivity>) = with(ui) {
         v.onClick {
             alert {
                 title(R.string.brushSizeDialogTitle)
@@ -61,7 +61,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
                                 onClick {
                                     brushSize = this.tag.toString().toFloat()
                                     drawView.setBrushSize(brushSize)
-                                    info("new size: " + brushSize)
+//                                    info("new size: " + brushSize)
 
                                 }
                             }
@@ -75,7 +75,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
-    fun setNewButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
+    fun setNewButtonClick(v: View, ui: AnkoContext<MainActivity>) = with(ui) {
         v.onClick {
             alert {
                 title(R.string.newPaintDialogTitle)
@@ -88,13 +88,13 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
 
     }
 
-    fun setSaveButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
+    fun setSaveButtonClick(v: View, ui: AnkoContext<MainActivity>) = with(ui) {
         v.onClick {
             alert {
                 title(R.string.savePaintDialogTitle)
                 message(R.string.savePaintDialogMsg)
                 positiveButton(R.string.yes) {
-                    if (drawView.save(actx.ctx)) toast(R.string.savedPaintMsg)
+                    if (drawView.save(ui.ctx)) toast(R.string.savedPaintMsg)
                     else toast(R.string.notSavedPaintMsg)
                 }
                 negativeButton(R.string.no)
@@ -104,7 +104,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
 
     }
 
-    override fun createView(actx: AnkoContext<MainActivity>) = with(actx) {
+    override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
 
         //TODO implementing mainLayout subcomponents in separate functions
 
@@ -167,13 +167,13 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         drawView.setBrushSize(brushSize)
 
         val newButton = activityButtons["@string/start_new"]
-        setNewButtonClick(newButton!!, actx)
+        setNewButtonClick(newButton!!, ui)
 
         val brushButton = activityButtons["@string/brush"]
-        setBrushButtonClick(brushButton!!, actx)
+        setBrushButtonClick(brushButton!!, ui)
 
         val saveButton = activityButtons["@string/save"]
-        setSaveButtonClick(saveButton!!, actx)
+        setSaveButtonClick(saveButton!!, ui)
 
         mainLayout
 
