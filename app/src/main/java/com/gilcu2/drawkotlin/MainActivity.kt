@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.style
 
@@ -20,6 +21,23 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
+
+    lateinit var activityLayout: LinearLayout
+    lateinit var drawView: DrawingView
+    lateinit var colorLayout: LinearLayout
+
+    data class MainButtonData(val image: Int, val description: String, val onClick: (View?) -> Unit = {})
+
+    val activityButtonsData = listOf(
+            MainButtonData(R.drawable.new_pic, "@string/start_new"),
+            MainButtonData(R.drawable.brush, "@string/brush"),
+            MainButtonData(R.drawable.eraser, "@string/eraser"),
+            MainButtonData(R.drawable.save, "@string/save"))
+
+    val colorsData = listOf(0xFF0000, 0x00FF00, 0x0000FF, 0xFFAA00, 0, 0xFFFFFF)
+    val brushSizes = listOf(20f, 80f, 320f)
+    var brushSize = brushSizes[0]
+
     private val customStyle = { v: Any ->
         when (v) {
 //            is Button -> v.textSize = 26f
@@ -27,26 +45,39 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
-    override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
+    fun setBrushButtonClick(v: View, ctx: AnkoContext<MainActivity>) = with(ctx) {
+        v.onClick {
+            alert {
+                title(R.string.brushSizeDialogTitle)
+                customView {
+                    verticalLayout {
+                        brushSizes.forEach {
+                            button(it.toString()) {
+                                tag = it
+                                onClick {
+                                    brushSize = this.tag.toString().toFloat()
+                                    drawView.setBrushSize(brushSize)
+                                    info("new size: " + brushSize)
 
-        data class MainButtonData(val image: Int, val description: String, val onClick: (View?) -> Unit = {})
+                                }
+                            }
+                        }
+                    }
+                    okButton { }
 
-        val activityButtonsData = listOf(
-                MainButtonData(R.drawable.new_pic, "@string/start_new"),
-                MainButtonData(R.drawable.brush, "@string/brush"),
-                MainButtonData(R.drawable.eraser, "@string/eraser"),
-                MainButtonData(R.drawable.save, "@string/save"))
+                }
+            }.show()
 
-        val colorsData = listOf(0xFF0000, 0x00FF00, 0x0000FF, 0xFFAA00, 0, 0xFFFFFF)
-        val brushSizes = listOf(20f, 40f, 60f)
+        }
+    }
 
-        var brushSize = brushSizes[0]
-        var lastBrushSize = brushSize
 
-        verticalLayout {
+    override fun createView(ctx: AnkoContext<MainActivity>) = with(ctx) {
+
+        val mainLayout = verticalLayout {
 
             // Activity selection
-            val activityLayout = linearLayout {
+            activityLayout = linearLayout {
 
                 activityButtonsData.forEach {
                     imageButton {
@@ -63,16 +94,16 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
                 gravity = Gravity.CENTER
             }
 
-            val drawView = drawingView {
+
+            drawView = drawingView {
                 backgroundColor = 0xFFFFFF.opaque
             }.lparams {
                 margin = dip(5)
-            }.lparams {
                 weight = 1F
             }
 
             // Color selection
-            val paintLayout = linearLayout {
+            colorLayout = linearLayout {
 
                 colorsData.forEach {
                     imageButton {
@@ -95,36 +126,16 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
                 gravity = Gravity.CENTER
             }
 
-            var currPaint = paintLayout.getChildAt(0)
-            drawView.setColor(currPaint.tag.toString().toInt())
-            drawView.setBrushSize(brushSize)
-
-            val brushButton = activityLayout.getChildAt(1)
-            brushButton.onClick {
-                alert {
-                    title(R.string.brushSizeDialogTitle)
-                    customView {
-                        verticalLayout {
-                            brushSizes.forEach {
-                                button(it.toString()) {
-                                    tag = it
-                                    onClick {
-                                        val size = this.tag.toString().toFloat()
-                                        drawView.setBrushSize(size)
-                                        info("new size: " + size)
-
-                                    }
-                                }
-                            }
-                        }
-                        okButton { }
-
-                    }
-                }.show()
-
-            }
-
         }.applyRecursively(customStyle)
+
+        var currPaint = colorLayout.getChildAt(0)
+        drawView.setColor(currPaint.tag.toString().toInt())
+        drawView.setBrushSize(brushSize)
+
+        val brushButton = activityLayout.getChildAt(1)
+        setBrushButtonClick(brushButton)
+
+        mainLayout
 
     }
 
