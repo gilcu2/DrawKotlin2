@@ -49,7 +49,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
-    fun setBrushButtonClick(v: View, ctx: AnkoContext<MainActivity>) = with(ctx) {
+    fun setBrushButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
         v.onClick {
             alert {
                 title(R.string.brushSizeDialogTitle)
@@ -75,7 +75,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
-    fun setNewButtonClick(v: View, ctx: AnkoContext<MainActivity>) = with(ctx) {
+    fun setNewButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
         v.onClick {
             alert {
                 title(R.string.newPaintDialogTitle)
@@ -88,7 +88,23 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
 
     }
 
-    override fun createView(ctx: AnkoContext<MainActivity>) = with(ctx) {
+    fun setSaveButtonClick(v: View, actx: AnkoContext<MainActivity>) = with(actx) {
+        v.onClick {
+            alert {
+                title(R.string.savePaintDialogTitle)
+                message(R.string.savePaintDialogMsg)
+                positiveButton(R.string.yes) {
+                    if (drawView.save(actx.ctx)) toast(R.string.savedPaintMsg)
+                    else toast(R.string.notSavedPaintMsg)
+                }
+                negativeButton(R.string.no)
+            }.show()
+
+        }
+
+    }
+
+    override fun createView(actx: AnkoContext<MainActivity>) = with(actx) {
 
         //TODO implementing mainLayout subcomponents in separate functions
 
@@ -151,21 +167,19 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         drawView.setBrushSize(brushSize)
 
         val newButton = activityButtons["@string/start_new"]
-        setNewButtonClick(newButton!!, ctx)
+        setNewButtonClick(newButton!!, actx)
 
         val brushButton = activityButtons["@string/brush"]
-        setBrushButtonClick(brushButton!!, ctx)
+        setBrushButtonClick(brushButton!!, actx)
+
+        val saveButton = activityButtons["@string/save"]
+        setSaveButtonClick(saveButton!!, actx)
 
         mainLayout
 
     }
 
-//    fun brushBottonClick(v:View?) {
-//        alert("@string/brushSizeDialogTitle") {
-//
-//        }
-//
-//    }
+
 }
 
 

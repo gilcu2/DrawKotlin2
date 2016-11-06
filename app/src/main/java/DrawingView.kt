@@ -2,12 +2,14 @@ package com.gilcu2.drawkotlin
 
 import android.content.Context
 import android.graphics.*
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewManager
 import org.jetbrains.anko.custom.ankoView
 
 import android.view.MotionEvent
+import java.util.*
 
 /**
  * Created by gilcu2 on 10/30/16.
@@ -78,6 +80,15 @@ class DrawingView(context: Context) : View(context) {
     fun startNew() {
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR)
         invalidate()
+    }
+
+    fun save(ctx: Context): Boolean {
+        setDrawingCacheEnabled(true)
+        if (MediaStore.Images.Media.insertImage(
+                ctx.contentResolver, getDrawingCache(),
+                UUID.randomUUID().toString() + ".png", "drawing") != null)
+            return true
+        else return false
     }
 }
 

@@ -8,6 +8,10 @@
     <string name="brushSizeDialogTitle">Select brush size</string>
     <string name="newPaintDialogTitle">New drawing</string>
     <string name="newPaintDialogMsg">Start new drawing (you will lose the current drawing)?</string>
+    <string name="savePaintDialogTitle">Save drawing</string>
+    <string name="savePaintDialogMsg">Save drawing to device Gallery?</string>
+    <string name="savedPaintMsg">Drawing saved to Gallery!</string>
+    <string name="notSavedPaintMsg">Oops! Image could not be saved.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 </resources>
