@@ -71,8 +71,22 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         }
     }
 
+    fun setNewButtonClick(v: View, ctx: AnkoContext<MainActivity>) = with(ctx) {
+        v.onClick {
+            alert {
+                title(R.string.newPaintDialogTitle)
+                message(R.string.newPaintDialogMsg)
+                positiveButton(R.string.yes) { drawView.startNew() }
+                negativeButton(R.string.no)
+            }.show()
+
+        }
+
+    }
 
     override fun createView(ctx: AnkoContext<MainActivity>) = with(ctx) {
+
+        //TODO implementing mainLayout subcomponents in separate functions
 
         val mainLayout = verticalLayout {
 
@@ -132,8 +146,11 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         drawView.setColor(currPaint.tag.toString().toInt())
         drawView.setBrushSize(brushSize)
 
+        val newButton = activityLayout.getChildAt(0)
+        setNewButtonClick(newButton, ctx)
+
         val brushButton = activityLayout.getChildAt(1)
-        setBrushButtonClick(brushButton)
+        setBrushButtonClick(brushButton, ctx)
 
         mainLayout
 

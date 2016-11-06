@@ -1,15 +1,12 @@
 package com.gilcu2.drawkotlin
 
 import android.content.Context
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewManager
 import org.jetbrains.anko.custom.ankoView
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
 import android.view.MotionEvent
 
 /**
@@ -72,8 +69,13 @@ class DrawingView(context: Context) : View(context) {
     }
 
     fun setBrushSize(brushSize: Float) {
-//        invalidate()
+        invalidate()
         drawPaint.setStrokeWidth(brushSize)
+    }
+
+    fun startNew() {
+        drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR)
+        invalidate()
     }
 }
 
