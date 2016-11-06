@@ -69,6 +69,8 @@ class DrawingView(context: Context) : View(context) {
     }
 
     fun setBrushSize(brushSize: Float) {
+
+        //TODO don't work, follow the java implementation to fix
         invalidate()
         drawPaint.setStrokeWidth(brushSize)
     }

@@ -26,6 +26,10 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
     lateinit var drawView: DrawingView
     lateinit var colorLayout: LinearLayout
 
+    val activityButtons = mutableMapOf<String, ImageButton>()
+
+    //TODO use onClick to set the method
+
     data class MainButtonData(val image: Int, val description: String, val onClick: (View?) -> Unit = {})
 
     val activityButtonsData = listOf(
@@ -94,7 +98,7 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
             activityLayout = linearLayout {
 
                 activityButtonsData.forEach {
-                    imageButton {
+                    activityButtons[it.description] = imageButton {
                         contentDescription = it.description
                         imageResource = it.image
 
@@ -146,11 +150,11 @@ class MainActivityUi : AnkoComponent<MainActivity>, AnkoLogger {
         drawView.setColor(currPaint.tag.toString().toInt())
         drawView.setBrushSize(brushSize)
 
-        val newButton = activityLayout.getChildAt(0)
-        setNewButtonClick(newButton, ctx)
+        val newButton = activityButtons["@string/start_new"]
+        setNewButtonClick(newButton!!, ctx)
 
-        val brushButton = activityLayout.getChildAt(1)
-        setBrushButtonClick(brushButton, ctx)
+        val brushButton = activityButtons["@string/brush"]
+        setBrushButtonClick(brushButton!!, ctx)
 
         mainLayout
 
